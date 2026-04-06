@@ -1,9 +1,9 @@
 # Projeto: Sistema de Gerenciamento de Tarefas (Agile & DevOps)
 
-## 1. Descrição do Projeto
+## 1. Descrição do Projeto 🎯
 Este é um **Sistema de Gerenciamento de Tarefas Web** desenvolvido como parte de um exercício prático de DevOps e metodologias ágeis. O software permite que o usuário gerencie suas atividades pessoais de forma privada, com suporte a categorias, prazos e controle de status, tudo acessível via navegador.
 
-## 2. User Stories (Planejamento Scrum)
+## 2. User Stories (Planejamento Scrum) 
 Com base na entrevista de levantamento de requisitos, definimos as seguintes histórias de usuário:
 
 * **US01:** Como usuário, quero realizar login para acessar minhas tarefas de forma privada. 

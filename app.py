@@ -1,4 +1,9 @@
+import os
+import threading
+import time
+
 from flask import Flask, request, jsonify
+from api_test import rodar_testes
 from config import get_db_url
 from models import db, Usuario, Categoria, Tarefa
 
@@ -10,14 +15,33 @@ db.init_app(app)
 
 # --- CRUD USUARIO ---
 @app.route('/usuarios', methods=['GET', 'POST'])
-def gerenciar_usuarios():
+@app.route('/usuarios/<int:id>', methods=['PUT', 'DELETE'])
+def gerenciar_usuarios(id=None):
     if request.method == 'POST':
         data = request.json
         novo = Usuario(nome=data['nome'], email=data['email'], senha=data['senha'])
         db.session.add(novo)
         db.session.commit()
         return jsonify({"id": novo.id}), 201
-    
+
+    if request.method == 'PUT':
+        u = Usuario.query.get_or_404(id)
+        data = request.json
+        # Atualiza apenas os campos enviados no JSON
+        u.nome = data.get('nome', u.nome)
+        u.email = data.get('email', u.email)
+        if 'senha' in data:
+            u.senha = data['senha']
+        db.session.commit()
+        return jsonify({"msg": "Usuário atualizado"})
+
+    if request.method == 'DELETE':
+        u = Usuario.query.get_or_404(id)
+        db.session.delete(u)
+        db.session.commit()
+        return jsonify({"msg": "Usuário removido"})
+
+    # GET (Listar todos)
     usuarios = Usuario.query.all()
     return jsonify([{"id": u.id, "nome": u.nome, "email": u.email} for u in usuarios])
 
@@ -91,5 +115,19 @@ def gerenciar_tarefas(id=None):
         "id_categoria": t.id_categoria
     } for t in tarefas])
 
+def executar_testes_apos_startup():
+        # Espera 4 segundos para garantir que o Flask já está aceitando requisições
+        time.sleep(4)
+        print("\n[START] Servidor online! Iniciando testes automáticos...\n")
+        try:
+            rodar_testes()
+        except Exception as e:
+            print(f"❌ Erro ao rodar testes automáticos: {e}")
+
 if __name__ == '__main__':
+
+    if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+        thread_testes = threading.Thread(target=executar_testes_apos_startup, daemon=True)
+        thread_testes.start()
+        
     app.run(debug=True)

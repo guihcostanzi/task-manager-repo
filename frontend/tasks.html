@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tarefas · Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+    <div class="topbar">
+        <h1>Minhas Tarefas</h1>
+        <button onclick="logout()">Sair</button>
+    </div>
+
+    <!-- CATEGORIAS -->
+    <div class="secao-categorias">
+        <h2>Categorias</h2>
+        <div class="linha-categoria">
+            <input id="cat_nome" placeholder="Ex: Trabalho, Pessoal...">
+            <button onclick="criarCategoria()">Adicionar</button>
+        </div>
+        <ul class="lista-categorias" id="categorias"></ul>
+    </div>
+
+    <!-- FILTROS SIMPLIFICADOS -->
+    <div class="secao-filtros">
+        <div class="filtros-linha">
+            <select id="filtro_status">
+                <option value="">Todas as tarefas</option>
+                <option value="pendente">Pendentes</option>
+                <option value="concluida">Concluídas</option>
+            </select>
+            <select id="filtro_ordenacao">
+                <option value="recentes">Mais recentes</option>
+                <option value="antigas">Mais antigas</option>
+            </select>
+            <button onclick="carregarTarefas()">Aplicar</button>
+        </div>
+    </div>
+
+    <!-- CABEÇALHO DA LISTA E TOGGLE -->
+    <div class="acoes-header">
+        <h2>Suas Tarefas</h2>
+        <button class="btn-nova-tarefa" id="toggleFormBtn" onclick="toggleFormTarefa()">+ Nova Tarefa</button>
+    </div>
+
+    <!-- FORMULÁRIO TOGGLE/ ESCONDER -->
+    <div class="bloco-nova-tarefa" id="blocoNovaTarefa">
+        <div class="grid-tarefa">
+            <input id="desc" placeholder="O que precisa ser feito?">
+            <input id="data_inicio" type="datetime-local" placeholder="Início (opcional)">
+            <input id="data_fim" type="datetime-local" placeholder="Fim (opcional)">
+            <select id="categoria_select"></select>
+            <button onclick="criarTarefa()">Adicionar</button>
+        </div>
+        <p class="form-hint">Datas são opcionais - deixe em branco se não quiser definir</p>
+    </div>
+
+    <!-- LISTA DE TAREFAS (FOCO) -->
+    <ul class="lista-tarefas" id="lista"></ul>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>

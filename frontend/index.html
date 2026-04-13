@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login · Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="box" id="login-box">
+        <h2>Bem-vindo de volta</h2>
+        <input id="email" placeholder="Email" type="email">
+        <input id="senha" placeholder="Senha" type="password">
+        <button onclick="login()">Entrar</button>
+        <p onclick="mostrarCadastro()">Não tem conta? Cadastre-se</p>
+    </div>
+
+    <div class="box" id="cadastro-box" style="display:none;">
+        <h2>Criar conta</h2>
+        <input id="nome" placeholder="Nome completo">
+        <input id="novo_email" placeholder="Email" type="email">
+        <input id="nova_senha" placeholder="Senha" type="password">
+        <button onclick="criarUsuario()">Cadastrar</button>
+        <p onclick="mostrarLogin()">← Voltar para login</p>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

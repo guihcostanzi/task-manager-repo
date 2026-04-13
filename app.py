@@ -13,6 +13,30 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
+# --- US 01: LOGIN USUARIO ---
+@app.route('/api/login', methods=['POST'])
+def realizar_login():
+    data = request.json
+    email = data.get('email')
+    senha = data.get('senha')
+
+    if not email or not senha:
+        return jsonify({"erro": "Erro! E-mail e senha são obrigatórios"}), 400
+
+    usuario = Usuario.query.filter_by(email=email).first()
+
+    if not usuario:
+        return jsonify({"erro": "Erro! Login não encontrado."}), 404
+    
+    if usuario.senha != senha:
+        return jsonify({"erro": "Erro! Senha incorreta."}), 401
+
+    return jsonify({
+        "mensagem": f"Bem-vindo, {usuario.nome}!",
+        "id_usuario": usuario.id,
+        "nome": usuario.nome
+    }), 200
+
 # --- CRUD USUARIO ---
 @app.route('/usuarios', methods=['GET', 'POST'])
 @app.route('/usuarios/<int:id>', methods=['PUT', 'DELETE'])

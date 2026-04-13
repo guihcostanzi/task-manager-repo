@@ -60,6 +60,31 @@ def rodar_testes():
             imprimir_log("Criar Tarefa", "SUCESSO", f"(ID: {tarefa_id})")
         else:
             raise Exception(f"Falha ao criar tarefa: {res.text}")
+        
+        # ---------------------------------------------------------
+        # AUTENTICAÇÃO (POST /api/login)
+        # ---------------------------------------------------------
+        print("\n--- ETAPA DE AUTENTICAÇÃO (LOGIN) ---")
+        
+        # Teste A: Login com Sucesso
+        res_login = requests.post(f"{BASE_URL}/api/login", json={
+            "email": email_teste,
+            "senha": "senha_segura_123"
+        })
+        if res_login.status_code == 200:
+            imprimir_log("Login Válido", "SUCESSO", f"(Mensagem: {res_login.json().get('mensagem')})")
+        else:
+            raise Exception(f"Falha ao realizar login válido: {res_login.text}")
+
+        # Teste B: Login Inválido (Senha Errada)
+        res_login_erro = requests.post(f"{BASE_URL}/api/login", json={
+            "email": email_teste,
+            "senha": "senha_errada_propositalmente"
+        })
+        if res_login_erro.status_code == 401:
+            imprimir_log("Login Inválido", "SUCESSO", "(Bloqueio de senha incorreta confirmado)")
+        else:
+            raise Exception(f"Falha de segurança! API permitiu login com senha errada ou retornou status incorreto: {res_login_erro.status_code}")
 
 
         # ---------------------------------------------------------

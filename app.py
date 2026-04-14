@@ -221,4 +221,4 @@ if __name__ == '__main__':
         )
         thread_testes.start()
 
-    app.run(debug=True)
+    app.run(debug=False)

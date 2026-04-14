@@ -1,0 +1,50 @@
+name: Full Stack Tests
+
+on:
+  push:
+    branches: [ "main", "tests" ]
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Test Python API
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
+        python app.py &
+        SERVER_PID=$!
+        
+        # Waits 5 seconds for the server to fully turn on
+        sleep 5
+        
+        python api_test.py
+        
+        kill $SERVER_PID 2>/dev/null || true
+
+  frontend-test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./frontend 
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install and Test Frontend
+      run: |
+        # Installs frontend dependencies and executes the JavaScript test suite
+        npm install
+        npm test

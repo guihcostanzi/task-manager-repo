@@ -152,3 +152,7 @@ def rodar_testes():
     except Exception as e:
         print(f"\n[ERRO] ERRO FATAL: {str(e)}")
         sys.exit(1)
+
+# Executes the api_test.py
+if __name__ == "__main__":
+    rodar_testes()

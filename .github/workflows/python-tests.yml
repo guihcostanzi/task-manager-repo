@@ -15,11 +15,19 @@ jobs:
         python-version: '3.10'
     - name: Test Python API
       run: |
-        # Updates pip, installs requirements, and runs pytest
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install requests
+        
+        python app.py &
+        SERVER_PID=$!
+        
+        # Waits 5 seconds for the server to fully turn on
+        sleep 5
+        
         python api_test.py
+        
+        kill $SERVER_PID 2>/dev/null || true
 
   frontend-test:
     runs-on: ubuntu-latest
